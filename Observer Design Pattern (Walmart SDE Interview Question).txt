@@ -1,0 +1,128 @@
+import java.util.*;
+
+// OBSERVER DESIGN PATTERN
+
+// WALMART SYSTEM DESIGN QUESTION
+
+interface StocksObservable
+{
+    public void add(NotificationAlertObserver observer);
+    public void remove(NotificationAlertObserver observer);
+    public void notifySubscribers();
+    public void setStockCount(int newStockAdded);
+    public int getStockCount();
+}
+
+class IphoneObservableImpl implements StocksObservable
+{
+    List<NotificationAlertObserver> observerList = new ArrayList<>();
+    int stockCount = 0;
+    
+    @Override
+    public void add(NotificationAlertObserver obj)
+    {
+        observerList.add(obj);
+    }
+    
+    @Override
+    public void remove(NotificationAlertObserver obj)
+    {
+        observerList.remove(obj);
+    }
+    
+    @Override
+    public void notifySubscribers()
+    {
+        for(NotificationAlertObserver obj : observerList)
+        {
+            obj.update();
+        }
+    }
+    
+    public void setStockCount(int newStockAdded)
+    {
+       if(stockCount == 0)
+       {
+           notifySubscribers();
+       }
+       
+       stockCount = newStockAdded;
+    }
+    
+    public int getStockCount()
+    {
+        return stockCount; 
+    }
+}
+
+interface NotificationAlertObserver 
+{
+    public void update();
+}
+
+class EmailAlertObserverImpl implements NotificationAlertObserver
+{
+    String emailId;
+    StocksObservable observable;
+    
+    public EmailAlertObserverImpl(String emailId, StocksObservable observable)
+    {
+        this.observable = observable;
+        this.emailId = emailId;
+    }
+    
+    @Override
+    public void update()
+    { 
+    //   if(observable.getStockCount() > 0)
+       sendMail(emailId, "product is in stock hurry up!"); 
+    }
+    
+    private void sendMail(String email, String msg)
+    {
+        System.out.println("mail sent to :" + emailId + " "+ msg);
+    }
+}
+
+class MobileAlertObserverImpl implements NotificationAlertObserver
+{
+    String userName;
+    StocksObservable observable;
+    
+    public MobileAlertObserverImpl(String userName, StocksObservable observable)
+    {
+        this.userName  = userName;
+        this.observable = observable;
+    }
+    
+    @Override
+    public void update()
+    {
+        sendMsgOnMobile(userName, "product is in stock hurry up!");
+    }
+    
+    private void sendMsgOnMobile(String userName, String msg)
+    {
+        System.out.println("msg sent to :"+ userName);
+    }
+}
+
+public class Store  
+{
+    public static void main(String[] args)
+    {
+        StocksObservable iPhoneStockObservable = new IphoneObservableImpl();
+        
+        NotificationAlertObserver observer1 = new EmailAlertObserverImpl("nishantraj839@gmail.com",iPhoneStockObservable);
+        NotificationAlertObserver observer2 = new EmailAlertObserverImpl("ritikapriya@gmail.com", iPhoneStockObservable);
+        NotificationAlertObserver observer3 = new MobileAlertObserverImpl("nisraj", iPhoneStockObservable);
+        
+        iPhoneStockObservable.add(observer1);
+        iPhoneStockObservable.add(observer2);
+        iPhoneStockObservable.add(observer3);
+        
+        iPhoneStockObservable.setStockCount(10);
+        iPhoneStockObservable.setStockCount(0);
+        iPhoneStockObservable.setStockCount(100);
+    }
+}

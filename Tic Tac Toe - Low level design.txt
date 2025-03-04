@@ -1,0 +1,101 @@
+import java.util.*;
+
+
+class enum PieceType
+{
+    X,
+    O
+}
+
+class PlayingPiece
+{
+    public PieceType pieceType;
+    
+    PlayingPiece(PieceType pieceType)
+    {
+        this.pieceType = pieceType; 
+    }
+}
+
+class PlayingPieceX extends PlayingPiece
+{
+   public PlayingPieceX()
+   {
+       super(PieceType.X);
+   }
+}
+
+class PlayingPieceO extends PlayingPiece
+{
+    public PlayingPieceO()
+    {
+        super(PieceType.O);
+    }
+}
+
+class Board 
+{
+    public int size;
+    public PlayingPiece[][] board;
+    
+    public Board(int size)
+    {
+        this.size = size;
+        board = new PlayingPiece[size][size];
+    }
+    
+}
+
+class Player 
+{
+    public String name;
+    public PlayingPiece playingpiece;
+    
+    public Player(String name, PlayingPiece playingPiece)
+    {
+        this.name = name;
+        this.playingPiece = playingPiece;
+    }
+    
+    public String getName(){ return name;}
+    public String SetName(String name) { this.name = name ;}
+    
+    public PlayingPiece getPlayingPiece() {return playingPiece;}
+    public void setPlayingPiece(PlayingPiece playingPiece) { this.playingPiece = playingPiece;}
+}
+
+class TicTacToeGame
+{
+    public Deque<Player> players;
+    public Board gameBoard;
+    
+    TicTacToeGame()
+    {
+        InitializeGame();
+    }
+    
+    public void InitializeGame()
+    {
+        players = new LinkedList<>();
+        
+        PlayingPieceX crossPiece = new PlayingPieceX();
+        Player player1 = new Player("Player1", crossPiece);
+        
+        PlayingPieceO noughtsPiece = new PlayingPieceO();
+        Player player2 = new Player("Player2", noughtsPiece);
+        
+        players.add(player1);
+        players.add(player2);
+        
+        gameBoard = new Board(3);
+    }
+}
+
+public class Main 
+{
+    public static void main(String[] args)
+    {
+        TicTacToeGame game = new TicTacToeGame();
+        System.out.println("game winner is :" + game.StartGame());
+    }
+}
