@@ -1,0 +1,66 @@
+import java.util.*;
+
+class KthLargest 
+{
+    PriorityQueue<Integer> pq ;
+    int k;
+    
+    KthLargest()
+    {
+        pq = new PriorityQueue<>();
+        k = 1;
+    }
+    
+    void setKthValue(int new_kthValue)
+    {
+        k = new_kthValue;
+    }
+    
+    void add(int ele)
+    {
+        pq.add(ele); // offer 
+        
+      /*  if(pq.size() > k)
+        pq.poll();*/
+    }
+    
+    void operate(int k)
+    {
+        while(pq.size()>k)
+        pq.poll();
+    }
+    
+    void display(int k)
+    {
+       operate(k);
+       System.out.println("The Kth Largest element is "+ pq.peek()); 
+    }
+}
+
+public class Solution
+{
+    public static void main(String[] args)
+    {
+        int[] arr = { 4,8,5,6,7,2};
+        
+        int k = 3;
+        
+        KthLargest p = new KthLargest();
+        
+        for(int i=0;i<arr.length;i++)
+        {
+            p.add(arr[i]);
+        }
+        
+        p.display(k);
+        
+        p.add(10);
+        p.add(11);
+        
+        p.display(k);
+        
+        p.add(12);
+        
+        p.display(k);
+    }
+}

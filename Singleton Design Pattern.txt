@@ -1,0 +1,94 @@
+import java.util.*;
+
+// SINGLETON DESIGN PATTERNS
+
+abstract class Vehicle 
+{
+    String type;
+    
+    public abstract void drive();
+    
+    public String getType()
+    {
+        return type;
+    }
+}
+
+class Car extends Vehicle 
+{
+    private static Car instance = null;
+    
+    Car()
+    {
+        this.type = "Car";
+        System.out.println("Car is instantiated");
+    }
+    
+    public static Car getInstance()
+    {
+        if(instance == null)
+        {
+            synchronized(Car.class)
+            {
+                if(instance == null)
+                {
+                    instance = new Car();
+                }
+            }
+        }
+        
+        return instance;
+    }
+    
+    @Override
+    public void drive()
+    {
+        System.out.println("Driving a Car");
+    }
+}
+
+class MotorCycle extends Vehicle 
+{
+    private static MotorCycle instance = null;
+    
+    MotorCycle()
+    {
+        this.type = "MotorCycle";
+        System.out.println("MotorCycle is instantiated");
+    }
+    
+    public static MotorCycle getInstance()
+    {
+        if(instance == null)
+        {
+            synchronized(MotorCycle.class)
+            {
+                if(instance == null)
+                {
+                    instance = new MotorCycle();
+                }
+            }
+        }
+        
+        return instance;
+    }
+    
+    @Override
+    public void drive()
+    {
+        System.out.println("Driving a MotorCycle");
+    }
+}
+
+public class Solution
+{
+    public static void main(String[] args)
+    {
+        Vehicle car = Car.getInstance();
+        car.drive();
+        
+        Vehicle motorcycle = MotorCycle.getInstance();
+        motorcycle.drive();
+    }
+}
+
